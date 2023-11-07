@@ -91,7 +91,7 @@ class MiAplicacion(QWidget):
         self.close()          #
 ###############################
         
-        
+    def abrir_nueva_ventana(self):         
 #Obtener la información del usuario y contraseña:
 #####################################################
         usuario = self.entrada_usuario.text()       #
