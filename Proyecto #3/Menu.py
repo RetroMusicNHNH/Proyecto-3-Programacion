@@ -32,7 +32,42 @@ def actualizar_pagina1():
     if titulo_nueva_ventana:
         titulo_nueva_ventana.setText("Aqui la mierda del primero")
         titulo_nueva_ventana.setStyleSheet("font: bold 42px; font-family: Arial")
+
+        # Define la posición de inicio para los botones
+        start_x = 150
+        start_y = 70
+
+        button_width = 200
+        button_height = 160
+        button_spacing_x = 30  # Espacio horizontal
+        button_spacing_y = 50  # Espacio vertical
         
+        ruta_icono_comun = r"C:\Users\Jake\Desktop\Proyecto #3\iconos\mesaG.png"  # Ruta del icono que se aplicará a todos los botones
+
+        for fila in range(3):  # Iterar sobre 3 filas
+            for columna in range(4):  # 4 botones en cada fila
+                # Crea los botones
+                boton_nueva_ventana = QPushButton(f' {fila * 4 + columna + 1}', nueva_ventana)
+                boton_nueva_ventana.setGeometry(start_x + columna * (button_width + button_spacing_x),
+                                               start_y + fila * (button_height + button_spacing_y),
+                                               button_width, button_height)
+                
+                # Establece un color específico para los botones
+                boton_nueva_ventana.setStyleSheet("background-color: #0798F2; border-radius: 15%; color: white; font: bold 40px; font-family: Arial")
+
+                # Carga el icono y redimensiona
+                icono = QIcon(ruta_icono_comun)
+                icono_redimensionado = icono.pixmap(80, 80)
+
+                # Asigna el icono redimensionado a los botones
+                boton_nueva_ventana.setIcon(QIcon(icono_redimensionado))
+                boton_nueva_ventana.setIconSize(icono_redimensionado.rect().size())
+
+                # Conecta los botones a alguna función si es necesario
+                # boton_nueva_ventana.clicked.connect(tu_funcion)
+
+                boton_nueva_ventana.show()
+                
 
 def actualizar_pagina2():
     global titulo_nueva_ventana
@@ -53,6 +88,8 @@ def actualizar_pagina5():
     global titulo_nueva_ventana
     if titulo_nueva_ventana:
         titulo_nueva_ventana.setText("La ultima porfiiiiin")
+        
+        
         
     ########################################################################
     # Funcion cuando la ventada de login se cierra y abra
