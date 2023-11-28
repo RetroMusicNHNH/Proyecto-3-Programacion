@@ -305,3 +305,5 @@ if __name__ == '__main__':              #
     ventana_principal = MiAplicacion()  #
     sys.exit(app.exec_())               #
 #########################################
+
+

@@ -1,10 +1,19 @@
 #POO
-
+import matplotlib.pyplot as plt
+import json
+import pyqtgraph as pg
+from collections import defaultdict
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit, QVBoxLayout,QComboBox
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit, QVBoxLayout,QComboBox,QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtWidgets import QHBoxLayout
 
+
+
+##################################################################################################################################
 
 class MiAplicacion(QWidget):
     def __init__(self):
@@ -22,7 +31,7 @@ class MiAplicacion(QWidget):
 ############################################################################
     def initUI(self):                                                      #
         label = QLabel(self)                                               #
-        pixmap = QPixmap("C:/Users/Jake/Desktop/Proyecto #3/img/IMG2.PNG") # 
+        pixmap = QPixmap("img\IMG2.png") # 
         label.setPixmap(pixmap)                                            #
         label.setGeometry(255, 0, 350, 400)                                #
                                                                            #
@@ -119,11 +128,11 @@ class MiAplicacion(QWidget):
             self.titulo_nueva_ventana.setGeometry(200, 20, 800, 500)                                         #
                                                                                                              # 
             rutas_imagenes = [                                                                               #
-                "C:/Users/Jake/Desktop/Proyecto #3/iconos/orden.png",                                        #
-                "C:/Users/Jake/Desktop/Proyecto #3/iconos/tarjeta.png",                                      #
-                "C:/Users/Jake/Desktop/Proyecto #3/iconos/grafico.png",                                      #
-                "C:/Users/Jake/Desktop/Proyecto #3/iconos/carrito.png",                                      #
-                "C:/Users/Jake/Desktop/Proyecto #3/iconos/menu.png"                                          #
+                "iconos\orden.png",                                        #
+                "iconos\tarjeta.png",                                      #
+                "iconos\grafico.png",                                      #
+                "iconos\carrito.png",                                      #
+                "iconos\menu.png"                                          #
             ]                                                                                                #
 ##############################################################################################################
 
@@ -176,7 +185,7 @@ class MiAplicacion(QWidget):
             button_spacing_x = 30
             button_spacing_y = 50
 
-            ruta_icono_comun = r"C:\Users\Jake\Desktop\Proyecto #3\iconos\mesaG.png"
+            ruta_icono_comun = r"iconos\mesaG.png"
 
             def mostrar_subpagina(numero_boton):
                 #self.titulo_nueva_ventana.setText(f"Subpágina 1.{numero_boton}")
@@ -284,15 +293,89 @@ class MiAplicacion(QWidget):
             self.ocultar_botones_pagina1()  # Ocultar los botones al cambiar a la página 2
             self.titulo_nueva_ventana.hide()
 
+#Manejo de estadisticas con graficas.
+#####################################################################################################################################################################################################
+
 
 
     def actualizar_pagina3(self):
+        with open('CanMes1.json') as f:
+            self.data = json.load(f)
         if self.titulo_nueva_ventana:
-            #self.titulo_nueva_ventana.setText("lo mismo de la tercera")
+            self.ocultar_botones_pagina1()
+            self.titulo_nueva_ventana.hide()
 
-            self.ocultar_botones_pagina1()  # Ocultar los botones al cambiar a la página 2
-            self.titulo_nueva_ventana.hide()     
+            # Botón para mostrar opciones
+            self.mostrar_opciones_boton = QPushButton('Mostrar Opciones', self.nueva_ventana)
+            self.mostrar_opciones_boton.setGeometry(135, 40, 300, 40)  # Ajusta posición (x, y) y tamaño (ancho, alto)
+            self.mostrar_opciones_boton.setStyleSheet("background-color: #0094FF; border-radius: 5%; color: white; font: bold 12px; font-family: Arial")
+            self.mostrar_opciones_boton.clicked.connect(self.mostrar_opciones)
+            self.mostrar_opciones_boton.show()
 
+            # Botón para generar
+            self.generar_boton = QPushButton('Generar', self.nueva_ventana)
+            self.generar_boton.setGeometry(500, 40, 300, 40)  # Ajusta posición (x, y) y tamaño (ancho, alto)
+            self.generar_boton.setStyleSheet("background-color: #0094FF; border-radius: 5%; color: white; font: bold 12px; font-family: Arial")
+            self.generar_boton.clicked.connect(self.generar)
+            self.generar_boton.show()
+
+            # QComboBox para las opciones
+            self.opciones_combo = QComboBox(self.nueva_ventana)
+            self.opciones_combo.addItems(["Estadistica por semana ", "Estadistica por mes "])
+            self.opciones_combo.setGeometry(135, 80, 200, 30)  # Ajusta posición (x, y) y tamaño (ancho, alto)
+            self.opciones_combo.setStyleSheet("background-color: #A5A5A5; color: black;")
+            self.opciones_combo.hide()
+
+
+    # Nueva función para manejar el clic del botón "Mostrar Opciones"
+    def mostrar_opciones(self):
+        self.opciones_combo.show()
+
+    def generar(self):
+        # Obtener la opción seleccionada en el combo box
+        opcion_seleccionada = self.opciones_combo.currentText()
+
+        # Filtrar datos según la opción seleccionada
+        if opcion_seleccionada == "Estadistica por semana ":
+            for semana in range(1, 5):
+                datos_semana_veg = [(comida, self.data[f"Semana{semana}"]["Vegetarianas"].get(comida, 0)) for comida in self.data[f"Semana{semana}"]["Vegetarianas"]]
+                datos_semana_noveg = [(comida, self.data[f"Semana{semana}"]["NoVegetarianas"].get(comida, 0)) for comida in self.data[f"Semana{semana}"]["NoVegetarianas"]]
+
+                mejores_comidas_semana_veg = sorted(datos_semana_veg, key=lambda x: x[1], reverse=True)[:3]
+                mejores_comidas_semana_noveg = sorted(datos_semana_noveg, key=lambda x: x[1], reverse=True)[:3]
+
+                # Agrega el argumento 'self' en la llamada
+                self.generar_grafica(mejores_comidas_semana_veg, f'Mejores Comidas Vegetarianas Semana {semana}', 'Comida', 'Ventas', self)
+                self.generar_grafica(mejores_comidas_semana_noveg, f'Mejores Comidas No Vegetarianas Semana {semana}', 'Comida', 'Ventas', self)
+
+        elif opcion_seleccionada == "Estadistica por mes ":
+            datos_mes_veg = [(comida, sum(self.data[f"Semana{semana}"]["Vegetarianas"].get(comida, 0) for semana in range(1, 5))) for comida in self.data["Semana1"]["Vegetarianas"]]
+            datos_mes_noveg = [(comida, sum(self.data[f"Semana{semana}"]["NoVegetarianas"].get(comida, 0) for semana in range(1, 5))) for comida in self.data["Semana1"]["NoVegetarianas"]]
+
+            mejores_comidas_mes_veg = sorted(datos_mes_veg, key=lambda x: x[1], reverse=True)[:3]
+            mejores_comidas_mes_noveg = sorted(datos_mes_noveg, key=lambda x: x[1], reverse=True)[:3]
+
+            # Agrega el argumento 'self' en la llamada
+            self.generar_grafica(mejores_comidas_mes_veg, 'Mejores Comidas Vegetarianas del Mes', 'Comida', 'Ventas', self)
+            self.generar_grafica(mejores_comidas_mes_noveg, 'Mejores Comidas No Vegetarianas del Mes', 'Comida', 'Ventas', self)
+
+
+    def generar_grafica(self, datos, titulo, xlabel, ylabel, destino_widget):
+        # Aquí generas la gráfica de barras usando matplotlib
+        nombres = [comida[0] for comida in datos]
+        ventas = [comida[1] for comida in datos]
+
+        fig, ax = plt.subplots()
+        ax.bar(nombres, ventas)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_title(titulo)
+
+        # Muestra la gráfica
+        plt.show()
+
+
+#########################################################################################################################################333
 
     def actualizar_pagina4(self):
         if self.titulo_nueva_ventana:

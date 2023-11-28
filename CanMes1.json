@@ -1,0 +1,67 @@
+{
+    "Semana1": {
+      "Vegetarianas": {
+        "Ensalada de Quinoa": 2,
+        "Lentejas Estofadas": 3,
+        "Tacos de Tofu": 1,
+        "Curry de Vegetales": 2,
+        "Pasta de Trigo Integral con Pesto de Albahaca": 1
+      },
+      "NoVegetarianas": {
+        "Pollo al Limón": 4,
+        "Salmón a la Parrilla": 2,
+        "Tacos de Carne Asada": 3,
+        "Paella de Mariscos": 1,
+        "Hamburguesa de Ternera con Queso": 2
+      }
+    },
+    "Semana2": {
+      "Vegetarianas": {
+        "Ensalada de Quinoa": 1,
+        "Lentejas Estofadas": 2,
+        "Tacos de Tofu": 2,
+        "Curry de Vegetales": 1,
+        "Pasta de Trigo Integral con Pesto de Albahaca": 3
+      },
+      "NoVegetarianas": {
+        "Pollo al Limón": 3,
+        "Salmón a la Parrilla": 1,
+        "Tacos de Carne Asada": 2,
+        "Paella de Mariscos": 2,
+        "Hamburguesa de Ternera con Queso": 1
+      }
+    },
+    "Semana3": {
+      "Vegetarianas": {
+        "Ensalada de Quinoa": 2,
+        "Lentejas Estofadas": 1,
+        "Tacos de Tofu": 3,
+        "Curry de Vegetales": 2,
+        "Pasta de Trigo Integral con Pesto de Albahaca": 1
+      },
+      "NoVegetarianas": {
+        "Pollo al Limón": 2,
+        "Salmón a la Parrilla": 3,
+        "Tacos de Carne Asada": 1,
+        "Paella de Mariscos": 2,
+        "Hamburguesa de Ternera con Queso": 2
+      }
+    },
+    "Semana4": {
+      "Vegetarianas": {
+        "Ensalada de Quinoa": 1,
+        "Lentejas Estofadas": 3,
+        "Tacos de Tofu": 1,
+        "Curry de Vegetales": 1,
+        "Pasta de Trigo Integral con Pesto de Albahaca": 2
+      },
+      "NoVegetarianas": {
+        "Pollo al Limón": 1,
+        "Salmón a la Parrilla": 2,
+        "Tacos de Carne Asada": 4,
+        "Paella de Mariscos": 1,
+        "Hamburguesa de Ternera con Queso": 3
+      }
+    }
+  }
+  
